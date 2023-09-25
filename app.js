@@ -1,24 +1,54 @@
 const express = require("express");
 const app = express();
+
+app.set("view engine", "ejs");
+app.use(express.static("public"));
+
 const port = 3000;
 app.use(express.json());
 app.use(logMiddlware);
 let products = [
-  { id: 100, name: "iPhone 12 Pro", price: 1099.99 },
-  { id: 200, name: "Samsung Galaxy S21", price: 999.99 },
-  { id: 300, name: "Sony PlayStation 5", price: 499.99 },
-  { id: 400, name: "MacBook Pro 16", price: 2399.99 },
-  { id: 500, name: "DJI Mavic Air 2", price: 799.99 },
+  {
+    id: 100,
+    name: "iPhone 12 Pro",
+    price: 1099.99,
+    image: "/images/img1.jpeg",
+  },
+  {
+    id: 200,
+    name: "Samsung Galaxy S21",
+    price: 999.99,
+    image: "/images/img2.jpeg",
+  },
+  {
+    id: 300,
+    name: "Sony PlayStation 5",
+    price: 499.99,
+    image: "/images/img3.jpeg",
+  },
+  {
+    id: 400,
+    name: "MacBook Pro 16",
+    price: 2399.99,
+    image: "/images/img4.jpeg",
+  },
+  {
+    id: 500,
+    name: "DJI Mavic Air 2",
+    price: 799.99,
+    image: "/images/img5.jpeg",
+  },
 ];
 
 app.get("/products", (req, res) => {
-  res.send(products);
+  res.render("home", { products });
 });
+
 app.get("/product/:id", (req, res) => {
   const prodcutId = req.params.id;
   const product = products.find((product) => product.id == prodcutId);
   if (product) {
-    res.send(product);
+    res.render("product", { product });
   } else {
     res.send({ message: "product not found" });
   }
